@@ -1,0 +1,7 @@
+const getDiscordUrl = async (DISCORD_API_URL, courseType, email) => { 
+   return DISCORD_API_URL + "&state=" + btoa(courseType + ";" + 'X' + ";" + email); 
+}
+
+module.exports = {
+    getDiscordUrl
+}

@@ -1,40 +1,32 @@
 const express = require("express");
 const router = express.Router();
-const Member = require("../models/member");
+const Prospect = require("../models/prospect");
 
 
-//ADDING A NEW MEMBER FROM DISCORD
+//ADDING A LEAD FROM TOP OF THE FUNNEL
 
 router.post("/", async (req, res) => {
 
-    const { fullName, email, role, uid, phone, isEmailVerified, joiningDate } = req.body;
+    const { fullName, email, phone, joiningDate, sourceId } = req.body;
 
     try {
         // Create a new member object
-        const newMember = new Member({
+        const newProspect = new Prospect({
             fullName,
             email,
-            role,
-            uid,
             phone,
-            isEmailVerified,
             joiningDate,
+            sourceId
         });
 
         // Save the new member to the 'members' collection
-        await newMember.save();
+        await newProspect.save();
 
-        res.status(201).json(newMember);
+        res.status(201).json(newProspect);
     } catch (err) {
         res.status(500).json({ error: err });
     }
 
 });
-
-
-router.get("/", (req, res) => {
-    res.send("Hello World")
-}) 
-
 
 module.exports = router;

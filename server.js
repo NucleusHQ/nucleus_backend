@@ -20,7 +20,14 @@ db.once("open", () => {
 app.use(express.json());
 
 const membersRouter = require("./routes/members");
-app.use('/members', membersRouter); //localhost:3000/members ==> everything that starts like this will go into the members route
+const prospectsRouter = require("./routes/prospects");
+const customerRouter = require("./routes/customers");
+const confirmationRouter = require("./routes/confirmation");
+
+app.use('/api/members', membersRouter);
+app.use('/api/prospects', prospectsRouter);
+app.use('/api/customers', customerRouter);
+app.use('/api/confirmation', confirmationRouter);
 
 app.listen(3000, () => console.log("Server Started"));
 

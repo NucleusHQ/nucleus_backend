@@ -9,13 +9,19 @@ const memberSchema = new mongoose.Schema({
         type: String, 
         required: true
     },
-    id: {
+    uid: {
         type: String, 
-        required: false
+        required: true, 
+        unique: true
     }, 
     role: {
-        type: Array, 
-        required: false, 
+        type: [String],
+        validate: {
+            validator: function (arr) {
+                return arr.length > 0;
+            },
+            message: "At least one role is required.",
+        },
     }, 
     phone: {
         type: String,
@@ -26,9 +32,8 @@ const memberSchema = new mongoose.Schema({
         required: false 
     }, 
     joiningDate: {
-        type: Date, 
-        required: false, 
-        default: Date.now
+        type: Date,
+        default: Date.now,
     }
 })
 

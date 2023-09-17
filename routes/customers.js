@@ -1,30 +1,30 @@
 const express = require("express");
 const router = express.Router();
-const Member = require("../models/member");
+const Customer = require("../models/customer");
 
 
 //ADDING A NEW MEMBER FROM DISCORD
 
 router.post("/", async (req, res) => {
 
-    const { fullName, email, role, uid, phone, isEmailVerified, joiningDate } = req.body;
+    const { fullName, email, phone, programId, purchaseCode, amount, joiningDate } = req.body;
 
     try {
         // Create a new member object
-        const newMember = new Member({
+        const newCustomer = new Customer({
             fullName,
-            email,
-            role,
-            uid,
-            phone,
-            isEmailVerified,
-            joiningDate,
+            email, 
+            phone, 
+            programId, 
+            purchaseCode, 
+            amount, 
+            joiningDate
         });
 
         // Save the new member to the 'members' collection
-        await newMember.save();
+        await newCustomer.save();
 
-        res.status(201).json(newMember);
+        res.status(201).json(newCustomer);
     } catch (err) {
         res.status(500).json({ error: err });
     }
