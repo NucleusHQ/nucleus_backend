@@ -1,7 +1,14 @@
+const programs = require("./programs");
+
 const getDiscordUrl = async (DISCORD_API_URL, courseType, email) => { 
    return DISCORD_API_URL + "&state=" + btoa(courseType + ";" + 'X' + ";" + email); 
 }
 
+const getProgramName = (purchaseCode) => {
+    return programs[purchaseCode];
+}
+
 module.exports = {
-    getDiscordUrl
+    getDiscordUrl, 
+    getProgramName
 }
