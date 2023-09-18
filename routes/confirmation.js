@@ -22,7 +22,8 @@ router.post("/starter/email", async (req, res) => {
     const isPortfolioSelected = purchaseCode.includes("P") && true;
     const isMockSelected = purchaseCode.includes("M") && true;
 
-    const fromEmail = 'contact@harishcode.com';
+    const fromEmail = 'hi@nucleushq.io';
+    const fromEmailPassword = "hmdsnxcjfemcrscw";
 
     // craft the email & other nodemailer stuff
 
@@ -31,13 +32,13 @@ router.post("/starter/email", async (req, res) => {
         service: 'Gmail', 
         auth: {
             user: fromEmail, // Your email address
-            pass: 'kvkkzznalbyhljhr', // Your email password or an application-specific password
+            pass: fromEmailPassword, // Your email password or an application-specific password
         },
     });
 
     const starterPurchaseEmailContent = starterPurchaseEmail(fullName, programName, batchNo, mentor, inviteLink, startDate, endDate, isPortfolioSelected, isMockSelected)
     const mailOptions = {
-        from: fromEmail, // Sender's email address
+        from: `NucleusHQ ${fromEmail}` , // Sender's email address
         to: email, // Recipient's email address
         subject: '8-Week JS Mastery Program <> Nucleus',
         text: starterPurchaseEmailContent, // Your email content
