@@ -7,7 +7,7 @@ const Member = require("../models/member");
 
 router.post("/", async (req, res) => {
 
-    const { fullName, email, role, uid, phone, isEmailVerified, joiningDate } = req.body;
+    const { fullName, email, role, uid, phone, isEmailVerified = false } = req.body;
 
     try {
         // Create a new member object
@@ -18,7 +18,6 @@ router.post("/", async (req, res) => {
             uid,
             phone,
             isEmailVerified,
-            joiningDate,
         });
 
         // Save the new member to the 'members' collection

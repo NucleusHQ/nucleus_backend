@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { DISCORD_API_URL, starterPurchaseEmail } = require("../constants");
+const { DISCORD_API_URL } = require("../constants");
 const nodemailer = require('nodemailer');
 const { getProgramName } = require("../utils");
 const { getDiscordUrl } = require("../utils");
-
-
+const webinarRegistrationEmail = require("../emails/webinarRegistration");
+const starterPurchaseEmail = require("../emails/JSMasteryRegistration");
 
 // CONFIRMATION MESSAGES ACROSS THE BOARD UPON NUCLEUS STARTER PURCHASE
 
@@ -60,6 +60,46 @@ router.post("/starter/whatsapp", async(req, res) => {
     //collect the data
     const {fullName, email, phone, programId, purchaseCode, amount, purchaseDate} = res.body;
 
+})
+
+router.post("/webinar/email", async (req, res) => {
+   // collect the data
+   const {fullName, email, programId, startTime, duration} = req.body;
+
+   const {name: webinarName} = getProgramName(programId);
+
+   const inviteLink = "https://discord.gg/Hu4haUQ8wq"; 
+   const meetingLink = "https://us05web.zoom.us/j/82150171903?pwd=MzxRfzmVTbnRksjcRs6Nu4MDzgbmra.1"
+
+   const fromEmail = 'hi@nucleushq.io';
+   const fromEmailPassword = "hmdsnxcjfemcrscw";
+
+   const transporter = nodemailer.createTransport({
+       service: 'Gmail', 
+       auth: {
+           user: fromEmail, 
+           pass: fromEmailPassword, 
+       },
+   });
+
+   const content = webinarRegistrationEmail(fullName, webinarName, inviteLink, meetingLink, startTime, duration)
+
+   const mailOptions = {
+       from: `NucleusHQ ${fromEmail}` , // Sender's email address
+       to: email, // Recipient's email address
+       subject: `Registration confirmation for ${webinarName} <> Nucleus`,
+       text: content, // Your email content
+     };
+
+     transporter.sendMail(mailOptions, (error, info) => {
+       if (error) {
+         console.error('Error sending email:', error);
+         res.status(500).send('Email sending failed');
+       } else {
+         console.log('Email sent:', info.response);
+         res.status(200).send('Email sent successfully');
+       }
+     });
 })
 
 

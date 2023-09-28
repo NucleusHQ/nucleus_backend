@@ -1,10 +1,12 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const cors = require("cors");
 require("dotenv").config();
+const functions = require("firebase-functions");
 
 
-mongoose.connect(process.env.databaseToken, {useNewUrlParser: true})
+mongoose.connect(process.env.DATABASE_TOKEN, {useNewUrlParser: true})
 
 
 const db = mongoose.connection
@@ -18,6 +20,7 @@ db.once("open", () => {
 })
 
 app.use(express.json());
+app.use(cors());
 
 const membersRouter = require("./routes/members");
 const prospectsRouter = require("./routes/prospects");
@@ -31,3 +34,4 @@ app.use('/api/confirmation', confirmationRouter);
 
 app.listen(3000, () => console.log("Server Started"));
 
+exports.app = functions.https.onRequest(app); 
